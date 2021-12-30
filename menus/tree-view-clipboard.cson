@@ -1,0 +1,16 @@
+'context-menu':
+    '.tree-view .full-menu': [
+        { 'label': 'Copy', 'command': 'tree-view-clipboard:copy' }
+        { 'label': 'Cut', 'command': 'tree-view-clipboard:cut' }
+        { 'label': 'Paste', 'command': 'tree-view-clipboard:paste' }
+    ]
+    '.tree-view .multi-select': [
+        { 'label': 'Copy', 'command': 'tree-view-clipboard:copy' }
+        { 'label': 'Cut', 'command': 'tree-view-clipboard:cut' }
+        { 'label': 'Paste', 'command': 'tree-view-clipboard:paste' }
+    ]
+    '.tree-view .full-menu .project-root > .header': [
+        { 'label': 'Copy', 'command': 'tree-view-clipboard:copy' }
+        { 'label': 'Cut', 'command': 'tree-view-clipboard:cut' }
+        { 'label': 'Paste', 'command': 'tree-view-clipboard:paste' }
+    ]

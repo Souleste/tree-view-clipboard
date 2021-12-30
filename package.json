@@ -1,0 +1,24 @@
+{
+    "name": "tree-view-clipboard",
+    "main": "./lib/tree-view-clipboard",
+    "version": "0.0.0",
+    "description": "Add native-like Clipboard operations to the tree-view",
+    "keywords": [
+        "clipboard",
+        "tree-view",
+        "copy",
+        "cut",
+        "paste"
+    ],
+    "activationHooks": [
+        "core:loaded-shell-environment"
+    ],
+    "repository": "https://github.com/Souleste/tree-view-clipboard",
+    "license": "MIT",
+    "engines": {
+        "atom": ">=1.0.0 <2.0.0"
+    },
+    "dependencies": {
+        "child_process": "^1.0.2"
+    }
+}

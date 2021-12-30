@@ -1,0 +1,14 @@
+'.platform-darwin .tree-view':
+    'cmd-c': 'tree-view-clipboard:copy'
+    'cmd-x': 'tree-view-clipboard:cut'
+    'cmd-v': 'tree-view-clipboard:paste'
+
+'.platform-win32 .tree-view, .platform-linux .tree-view':
+    'ctrl-c': 'tree-view-clipboard:copy'
+    'ctrl-x': 'tree-view-clipboard:cut'
+    'ctrl-v': 'tree-view-clipboard:paste'
+
+'tree-view':
+    'ctrl-c': 'tree-view-clipboard:copy'
+    'ctrl-x': 'tree-view-clipboard:cut'
+    'ctrl-v': 'tree-view-clipboard:paste'
