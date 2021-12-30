@@ -1,7 +1,7 @@
 {
     "name": "tree-view-clipboard",
     "main": "./lib/tree-view-clipboard",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Add native-like Clipboard operations to the tree-view",
     "keywords": [
         "clipboard",
