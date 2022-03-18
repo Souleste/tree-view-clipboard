@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 
 namespace TreeViewClipBoardPaste {
     public class App {
@@ -25,14 +26,55 @@ namespace TreeViewClipBoardPaste {
             foreach (string source in sources) {
                 bool isDir = string.IsNullOrEmpty(Path.GetFileName(source)) || Directory.Exists(source);
                 foreach (string target in args) {
-                    if (isDir) PasteDirectory(source, target, cut);
-                    else {
+                    if (isDir) {
+                        PasteDirectory(source, target, cut);
+                    } else {
+                        List<int> copiesList = new List<int>();
+
+                        string [] files = Directory.GetFiles(target);
+                        foreach(string file in files) {
+                            Match m = Regex.Match(Path.GetFileName(file), @".*\s-\sCopy(?:\s\(([0-9]+)\))?\..*$");
+                            if (m.Success) {
+                                if (m.Groups.Count > 1)  {
+                                    if (!String.IsNullOrEmpty(m.Groups[1].Value))
+                                        copiesList.Add(Int32.Parse(m.Groups[1].Value));
+                                    else copiesList.Add(1);
+                                }
+                            }
+                        }
+                        copiesList.Sort();
+
+                        int copies = 0;
+
+                        if (copiesList.Count > 0) {
+                        	int last = copiesList[copiesList.Count - 1],
+                        		missing = last + 1;
+
+                            int index = 0;
+                        	foreach(int copy in copiesList) {
+                        		if (index > 0 && copiesList[index - 1] != copiesList[index] - 1) {
+                        			missing = copiesList[index] - 1;
+                        			break;
+                        		}
+                                index++;
+                        	}
+
+                            copies = missing;
+                        }
+
                         string dest = Path.Combine(target, Path.GetFileName(source));
+
+                        if (File.Exists(dest)) {
+                            if (Convert.ToBoolean(copies))
+                                File.Copy(source, Path.Combine(target, Path.GetFileNameWithoutExtension(source) + " - Copy ("+copies+")" + Path.GetExtension(source)));
+                            else File.Copy(source, Path.Combine(target, Path.GetFileNameWithoutExtension(source) + " - Copy" + Path.GetExtension(source)));
+                        } else File.Copy(source, dest);
+
                         if (cut) {
-                            if (File.Exists(dest)) File.Delete(dest);
-                            File.Move(source, dest);
+                            File.Delete(source);
                             Clipboard.Clear();
-                        } else File.Copy(source, dest, true);
+                        }
+
                     }
                 }
             }

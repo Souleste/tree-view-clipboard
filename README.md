@@ -2,6 +2,10 @@
 
 Add native-like Clipboard operations to the [tree-view](https://atom.io/packages/tree-view). This plugin allows you to copy, cut and paste folders and files via the [tree-view](https://atom.io/packages/tree-view) context menu and [keybindings](#keybindings).
 
+## !Important
+
+Currently this package only works for windows OS. If you know how to develop in MacOS or Linux, please consider contributing.
+
 ## Copy
 
 You can copy tree-view selections by right-clicking them and clicking "Copy" in the context menu. The respective folders/files will be placed on the clipboard, ready to be pasted anywhere.
@@ -12,7 +16,7 @@ You can copy tree-view selections by right-clicking them and clicking "Copy" in 
 
 You can cut tree-view selections by right-clicking them and clicking "Cut" in the context menu. The respective folders/files will be placed on the clipboard, ready to be pasted anywhere.
 
-![cut](./assets/read-me/tree-view-cut.png) 
+![cut](./assets/read-me/tree-view-cut.png)
 
 ## Paste
 
