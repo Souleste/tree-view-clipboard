@@ -20,5 +20,6 @@
     },
     "dependencies": {
         "child_process": "^1.0.2"
-    }
+    },
+    "configSchema": {}
 }

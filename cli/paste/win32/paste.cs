@@ -10,10 +10,7 @@ namespace TreeViewClipBoardPaste {
         [STAThread]
         static void Main(string[] args) {
             IDataObject data = Clipboard.GetDataObject();
-            if (!data.GetDataPresent(DataFormats.FileDrop)) {
-                Console.WriteLine("No data was found in the Clipboard.");
-                return;
-            }
+            if (!data.GetDataPresent(DataFormats.FileDrop)) return;
 
             string[] sources = (string[]) data.GetData(DataFormats.FileDrop);
             MemoryStream stream = (MemoryStream) data.GetData("Preferred DropEffect", true);
@@ -21,19 +18,18 @@ namespace TreeViewClipBoardPaste {
             if (flag != 2 && flag != 5) return;
             bool cut = (flag == 2);
 
-            Console.WriteLine("Object was cut? " + cut.ToString());
-
-            foreach (string source in sources) {
+            foreach(string source in sources) {
                 bool isDir = string.IsNullOrEmpty(Path.GetFileName(source)) || Directory.Exists(source);
                 foreach (string target in args) {
-                    if (isDir) {
-                        PasteDirectory(source, target, cut);
-                    } else {
+                    if (isDir) PasteDirectory(source, target, cut);
+                    else {
+                        string flatFileName = Path.GetFileNameWithoutExtension(source);
+
                         List<int> copiesList = new List<int>();
 
                         string [] files = Directory.GetFiles(target);
                         foreach(string file in files) {
-                            Match m = Regex.Match(Path.GetFileName(file), @".*\s-\sCopy(?:\s\(([0-9]+)\))?\..*$");
+                            Match m = Regex.Match(Path.GetFileName(file), flatFileName+@"\s-\sCopy(?:\s\(([0-9]+)\))?\..*$");
                             if (m.Success) {
                                 if (m.Groups.Count > 1)  {
                                     if (!String.IsNullOrEmpty(m.Groups[1].Value))
@@ -64,10 +60,15 @@ namespace TreeViewClipBoardPaste {
 
                         string dest = Path.Combine(target, Path.GetFileName(source));
 
+                        if (cut && source == dest) {
+                            Clipboard.Clear();
+                            return;
+                        }
+
                         if (File.Exists(dest)) {
                             if (Convert.ToBoolean(copies))
-                                File.Copy(source, Path.Combine(target, Path.GetFileNameWithoutExtension(source) + " - Copy ("+copies+")" + Path.GetExtension(source)));
-                            else File.Copy(source, Path.Combine(target, Path.GetFileNameWithoutExtension(source) + " - Copy" + Path.GetExtension(source)));
+                                File.Copy(source, Path.Combine(target, flatFileName + " - Copy ("+copies+")" + Path.GetExtension(source)));
+                            else File.Copy(source, Path.Combine(target, flatFileName + " - Copy" + Path.GetExtension(source)));
                         } else File.Copy(source, dest);
 
                         if (cut) {
